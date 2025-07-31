@@ -1,31 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-
-// Dynamically import Leaflet components with SSR disabled
-const MapContainer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.MapContainer),
-  { ssr: false }
-);
-
-const TileLayer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.TileLayer),
-  { ssr: false }
-);
-
-const Marker = dynamic(
-  () => import('react-leaflet').then((mod) => mod.Marker),
-  { ssr: false }
-);
-
-const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
-  ssr: false,
-});
-
-// Dynamically import Leaflet CSS and L
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let L: any = null;
+import React, { useState } from 'react';
 
 interface TravelLocation {
   id: string;
@@ -154,34 +129,12 @@ const travelLocations: TravelLocation[] = [
 ];
 
 const About: React.FC = () => {
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [selectedLocation, setSelectedLocation] =
+    useState<TravelLocation | null>(null);
 
-  useEffect(() => {
-    // Load Leaflet L on client side
-    if (!L) {
-      import('leaflet').then((leaflet) => {
-        L = leaflet.default;
-
-        // Fix for default markers in react-leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl:
-            'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-          iconUrl:
-            'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          shadowUrl:
-            'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        });
-
-        setIsMapLoaded(true);
-      });
-    } else {
-      setIsMapLoaded(true);
-    }
-  }, []);
-
-
+  const handleLocationClick = (location: TravelLocation) => {
+    setSelectedLocation(location);
+  };
 
   const getMarkerColor = (type: string) => {
     switch (type) {
@@ -209,62 +162,20 @@ const About: React.FC = () => {
     }
   };
 
-  // Create custom markers
-  const createCustomIcon = (type: string) => {
-    const color = getMarkerColor(type);
-    const size = getMarkerSize(type);
-
-    return L.divIcon({
-      html: `
-        <div style="
-          width: ${size}px; 
-          height: ${size}px; 
-          background-color: ${color}; 
-          border: 2px solid white; 
-          border-radius: 50%; 
-          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          ${type === 'current' ? 'animation: pulse 2s infinite;' : ''}
-        ">
-          <div style="
-            width: ${size * 0.25}px; 
-            height: ${size * 0.25}px; 
-            background-color: white; 
-            border-radius: 50%;
-          "></div>
-        </div>
-      `,
-      className: 'custom-marker',
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size / 2],
-    });
+  // Convert lat/lng to SVG coordinates (simplified projection)
+  const latLngToSVG = (lat: number, lng: number) => {
+    const x = ((lng + 180) / 360) * 1000;
+    const y = ((90 - lat) / 180) * 500;
+    return { x, y };
   };
 
   return (
     <div className="w-full">
-      <style jsx global>{`
-        .constrained-map .leaflet-container {
-          width: 500px !important;
-          max-width: 500px !important;
-          margin: 0 auto !important;
-        }
-        .constrained-map .leaflet-pane {
-          width: 500px !important;
-          max-width: 500px !important;
-        }
-        .constrained-map .leaflet-map-pane {
-          width: 500px !important;
-          max-width: 500px !important;
-        }
-      `}</style>
-
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-blue-600 dark:text-blue-400 text-center">
         About Me
       </h2>
       <p className="text-base sm:text-lg text-center text-gray-700 dark:text-gray-300 mb-6 sm:mb-8">
-        My journey around the world - places I&apos;ve lived, studied, and visited.
+        My journey around the world - places I've lived, studied, and visited.
       </p>
 
       {/* Interactive World Map */}
@@ -294,52 +205,93 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Leaflet Map Container */}
-        <div className="constrained-map mx-auto h-64 sm:h-80 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-          {isMapLoaded && L ? (
-            <MapContainer
-              center={[20, 0]}
-              zoom={2}
-              style={{ height: '100%', width: '500px' }}
-              className="z-0"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+        {/* Simple World Map with SVG */}
+        <div className="relative w-full max-w-lg mx-auto h-64 sm:h-80 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+          <svg
+            viewBox="0 0 1000 500"
+            className="w-full h-full"
+            style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            }}
+          >
+            {/* Simple world map outline */}
+            <path
+              d="M 100 200 Q 150 180 200 200 Q 250 220 300 200 Q 350 180 400 200 Q 450 220 500 200 Q 550 180 600 200 Q 650 220 700 200 Q 750 180 800 200 Q 850 220 900 200"
+              fill="none"
+              stroke="#4a5568"
+              strokeWidth="2"
+              opacity="0.3"
+            />
 
-              {/* Location Markers */}
-              {travelLocations.map((location) => (
-                <Marker
-                  key={location.id}
-                  position={location.coordinates}
-                  icon={createCustomIcon(location.type)}
+            {/* Location Markers */}
+            {travelLocations.map((location) => {
+              const { x, y } = latLngToSVG(
+                location.coordinates[0],
+                location.coordinates[1]
+              );
+              const size = getMarkerSize(location.type);
+              const color = getMarkerColor(location.type);
+
+              return (
+                <g key={location.id}>
+                  <circle
+                    cx={x}
+                    cy={y}
+                    r={size / 2}
+                    fill={color}
+                    stroke="white"
+                    strokeWidth="2"
+                    className="cursor-pointer hover:scale-110 transition-transform duration-200"
+                    onClick={() => handleLocationClick(location)}
+                  />
+                  <circle
+                    cx={x}
+                    cy={y}
+                    r={size / 4}
+                    fill="white"
+                    className="cursor-pointer"
+                    onClick={() => handleLocationClick(location)}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* Location Info Popup */}
+          {selectedLocation && (
+            <div className="absolute top-2 left-2 right-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-200 dark:border-gray-600">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                    {selectedLocation.name}
+                  </h4>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium text-xs">
+                    {selectedLocation.country}
+                  </p>
+                  {selectedLocation.description && (
+                    <p className="text-gray-700 dark:text-gray-300 text-xs mt-1">
+                      {selectedLocation.description}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => setSelectedLocation(null)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  <Popup>
-                    <div className="text-center">
-                      <h4 className="font-bold text-gray-900 mb-1">
-                        {location.name}
-                      </h4>
-                      <p className="text-blue-600 font-medium text-sm mb-1">
-                        {location.country}
-                      </p>
-                      {location.description && (
-                        <p className="text-gray-700 text-sm">
-                          {location.description}
-                        </p>
-                      )}
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Loading map...
-                </p>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
           )}

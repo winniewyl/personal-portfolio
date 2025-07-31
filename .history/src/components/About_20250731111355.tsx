@@ -24,8 +24,8 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 });
 
 // Dynamically import Leaflet CSS and L
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let L: any = null;
+let leafletCSSLoaded = false;
 
 interface TravelLocation {
   id: string;
@@ -154,6 +154,8 @@ const travelLocations: TravelLocation[] = [
 ];
 
 const About: React.FC = () => {
+  const [selectedLocation, setSelectedLocation] =
+    useState<TravelLocation | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -163,7 +165,6 @@ const About: React.FC = () => {
         L = leaflet.default;
 
         // Fix for default markers in react-leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
           iconRetinaUrl:
@@ -181,7 +182,9 @@ const About: React.FC = () => {
     }
   }, []);
 
-
+  const handleLocationClick = (location: TravelLocation) => {
+    setSelectedLocation(location);
+  };
 
   const getMarkerColor = (type: string) => {
     switch (type) {
@@ -244,31 +247,21 @@ const About: React.FC = () => {
 
   return (
     <div className="w-full">
-      <style jsx global>{`
-        .constrained-map .leaflet-container {
-          width: 500px !important;
-          max-width: 500px !important;
-          margin: 0 auto !important;
-        }
-        .constrained-map .leaflet-pane {
-          width: 500px !important;
-          max-width: 500px !important;
-        }
-        .constrained-map .leaflet-map-pane {
-          width: 500px !important;
-          max-width: 500px !important;
+      <style jsx>{`
+        .custom-map-width .leaflet-container {
+          width: 600px !important;
+          max-width: 600px !important;
         }
       `}</style>
-
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-blue-600 dark:text-blue-400 text-center">
         About Me
       </h2>
       <p className="text-base sm:text-lg text-center text-gray-700 dark:text-gray-300 mb-6 sm:mb-8">
-        My journey around the world - places I&apos;ve lived, studied, and visited.
+        My journey around the world - places I've lived, studied, and visited.
       </p>
 
       {/* Interactive World Map */}
-      <div className="relative bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-2xl mx-auto">
+      <div className="relative bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-4xl mx-auto">
         <div className="text-center mb-3 sm:mb-4">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
             My World Map
@@ -295,13 +288,16 @@ const About: React.FC = () => {
         </div>
 
         {/* Leaflet Map Container */}
-        <div className="constrained-map mx-auto h-64 sm:h-80 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div
+          className="w-96 sm:w-[500px] md:w-[600px] mx-auto h-48 sm:h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+          style={{ maxWidth: '600px' }}
+        >
           {isMapLoaded && L ? (
             <MapContainer
               center={[20, 0]}
               zoom={2}
-              style={{ height: '100%', width: '500px' }}
-              className="z-0"
+              style={{ height: '100%', width: '600px', maxWidth: '600px' }}
+              className="z-0 custom-map-width"
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -314,6 +310,9 @@ const About: React.FC = () => {
                   key={location.id}
                   position={location.coordinates}
                   icon={createCustomIcon(location.type)}
+                  eventHandlers={{
+                    click: () => handleLocationClick(location),
+                  }}
                 >
                   <Popup>
                     <div className="text-center">

@@ -1,8 +1,9 @@
 'use client';
 
+import Hero from '../components/Hero';
 import About from '../components/About';
+import Projects from '../components/Projects';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 const experienceData = [
   {
@@ -64,6 +65,13 @@ export default function Home() {
 
   useEffect(() => {
     const sections = ['hero', 'about', 'experience', 'projects', 'education'];
+    const sectionColors = {
+      hero: 'text-violet-600',
+      about: 'text-blue-600',
+      experience: 'text-green-600',
+      projects: 'text-yellow-600',
+      education: 'text-pink-600',
+    };
 
     const observers = sections.map((sectionId) => {
       const element =
@@ -215,11 +223,9 @@ export default function Home() {
       <main className="flex-1 w-full flex flex-col items-center">
         <section className="w-full flex flex-col items-center justify-center py-8 sm:py-12 md:py-16 lg:py-20 bg-violet-50 dark:bg-violet-900/20 relative min-h-screen">
           {/* Headshot */}
-          <Image
+          <img
             src="/my-headshot.png"
             alt="Winnie Wang"
-            width={320}
-            height={320}
             className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 object-contain"
           />
         </section>
@@ -237,7 +243,7 @@ export default function Home() {
           className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-green-50 dark:bg-green-900/20 min-h-screen"
         >
           <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-green-600 dark:text-green-400 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-green-600 dark:text-green-400">
               Professional Experience
             </h2>
             <div className="space-y-8">
@@ -281,14 +287,14 @@ export default function Home() {
           className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-yellow-50 dark:bg-yellow-900/20 min-h-screen"
         >
           <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-yellow-600 dark:text-yellow-400 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-yellow-600 dark:text-yellow-400">
               Research Projects
             </h2>
             <div className="relative w-full max-w-6xl mx-auto">
               {/* Carousel Container */}
               <div className="relative overflow-hidden rounded-xl">
                 <div className="flex transition-transform duration-500 ease-in-out">
-                  {projectData.map((proj) => (
+                  {projectData.map((proj, idx) => (
                     <div
                       key={proj.title}
                       className="w-full flex-shrink-0 bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 px-6 sm:px-12"
@@ -390,7 +396,7 @@ export default function Home() {
           className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-pink-50 dark:bg-pink-900/20 min-h-screen"
         >
           <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-pink-600 dark:text-pink-400 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-pink-600 dark:text-pink-400">
               Education
             </h2>
             <div className="relative w-full flex flex-col lg:flex-row items-center justify-center">
@@ -404,11 +410,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 group-data-[flipped=true]:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/yu-hua-logo.png"
                         alt="江西育华学校 logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -434,11 +438,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/JXSDFZ-logo.png"
                         alt="江西师大附中国际部 logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -464,11 +466,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/tufts-logo.png"
                         alt="Tufts University logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -490,7 +490,7 @@ export default function Home() {
                         GPA: 3.83 / 4.00
                       </span>
                       <span className="text-xs text-emerald-600">
-                        Summa Cum Laude, Dean&apos;s List
+                        Summa Cum Laude, Dean's List
                       </span>
                     </div>
                   </div>
@@ -500,11 +500,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/purdue-logo.png"
                         alt="Purdue University logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />

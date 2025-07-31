@@ -24,8 +24,8 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 });
 
 // Dynamically import Leaflet CSS and L
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let L: any = null;
+let leafletCSSLoaded = false;
 
 interface TravelLocation {
   id: string;
@@ -154,16 +154,23 @@ const travelLocations: TravelLocation[] = [
 ];
 
 const About: React.FC = () => {
+  const [selectedLocation, setSelectedLocation] =
+    useState<TravelLocation | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
-    // Load Leaflet L on client side
+    // Load Leaflet CSS and L on client side
+    if (!leafletCSSLoaded) {
+      import('leaflet/dist/leaflet.css');
+      leafletCSSLoaded = true;
+    }
+
+    // Load Leaflet L
     if (!L) {
       import('leaflet').then((leaflet) => {
         L = leaflet.default;
 
         // Fix for default markers in react-leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
           iconRetinaUrl:
@@ -181,7 +188,9 @@ const About: React.FC = () => {
     }
   }, []);
 
-
+  const handleLocationClick = (location: TravelLocation) => {
+    setSelectedLocation(location);
+  };
 
   const getMarkerColor = (type: string) => {
     switch (type) {
@@ -244,63 +253,47 @@ const About: React.FC = () => {
 
   return (
     <div className="w-full">
-      <style jsx global>{`
-        .constrained-map .leaflet-container {
-          width: 500px !important;
-          max-width: 500px !important;
-          margin: 0 auto !important;
-        }
-        .constrained-map .leaflet-pane {
-          width: 500px !important;
-          max-width: 500px !important;
-        }
-        .constrained-map .leaflet-map-pane {
-          width: 500px !important;
-          max-width: 500px !important;
-        }
-      `}</style>
-
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-blue-600 dark:text-blue-400 text-center">
+      <h2 className="text-3xl font-bold mb-10 text-blue-600 dark:text-blue-400">
         About Me
       </h2>
-      <p className="text-base sm:text-lg text-center text-gray-700 dark:text-gray-300 mb-6 sm:mb-8">
-        My journey around the world - places I&apos;ve lived, studied, and visited.
+      <p className="text-lg text-center text-gray-700 dark:text-gray-300 mb-8">
+        My journey around the world - places I've lived, studied, and visited.
       </p>
 
       {/* Interactive World Map */}
-      <div className="relative bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-2xl mx-auto">
-        <div className="text-center mb-3 sm:mb-4">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="relative bg-white dark:bg-[#232336] rounded-2xl shadow-lg p-2">
+        <div className="text-center mb-3">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             My World Map
           </h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-2 sm:mb-3">
+          <p className="text-gray-600 dark:text-gray-400 mb-2">
             Click on the markers to learn more about each location
           </p>
 
           {/* Legend */}
-          <div className="flex justify-center space-x-3 sm:space-x-6 text-xs sm:text-sm mb-3 sm:mb-4">
+          <div className="flex justify-center space-x-6 text-sm mb-2">
             <div className="flex items-center">
-              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded-full mr-1 sm:mr-2 animate-pulse"></div>
+              <div className="w-4 h-4 bg-green-500 rounded-full mr-2 animate-pulse"></div>
               <span className="text-gray-600 dark:text-gray-400">Current</span>
             </div>
             <div className="flex items-center">
-              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-blue-500 rounded-full mr-1 sm:mr-2"></div>
+              <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
               <span className="text-gray-600 dark:text-gray-400">Lived</span>
             </div>
             <div className="flex items-center">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full mr-1 sm:mr-2"></div>
+              <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
               <span className="text-gray-600 dark:text-gray-400">Visited</span>
             </div>
           </div>
         </div>
 
         {/* Leaflet Map Container */}
-        <div className="constrained-map mx-auto h-64 sm:h-80 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div className="w-full h-[500px] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
           {isMapLoaded && L ? (
             <MapContainer
               center={[20, 0]}
               zoom={2}
-              style={{ height: '100%', width: '500px' }}
+              style={{ height: '100%', width: '100%' }}
               className="z-0"
             >
               <TileLayer
@@ -314,6 +307,9 @@ const About: React.FC = () => {
                   key={location.id}
                   position={location.coordinates}
                   icon={createCustomIcon(location.type)}
+                  eventHandlers={{
+                    click: () => handleLocationClick(location),
+                  }}
                 >
                   <Popup>
                     <div className="text-center">

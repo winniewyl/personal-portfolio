@@ -1,8 +1,9 @@
 'use client';
 
+import Hero from '../components/Hero';
 import About from '../components/About';
+import Projects from '../components/Projects';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 const experienceData = [
   {
@@ -215,11 +216,9 @@ export default function Home() {
       <main className="flex-1 w-full flex flex-col items-center">
         <section className="w-full flex flex-col items-center justify-center py-8 sm:py-12 md:py-16 lg:py-20 bg-violet-50 dark:bg-violet-900/20 relative min-h-screen">
           {/* Headshot */}
-          <Image
+          <img
             src="/my-headshot.png"
             alt="Winnie Wang"
-            width={320}
-            height={320}
             className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 object-contain"
           />
         </section>
@@ -404,11 +403,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 group-data-[flipped=true]:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/yu-hua-logo.png"
                         alt="江西育华学校 logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -434,11 +431,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/JXSDFZ-logo.png"
                         alt="江西师大附中国际部 logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -464,11 +459,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/tufts-logo.png"
                         alt="Tufts University logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
@@ -500,11 +493,9 @@ export default function Home() {
                   {/* Front Side - Logo */}
                   <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                      <img
                         src="/purdue-logo.png"
                         alt="Purdue University logo"
-                        width={80}
-                        height={80}
                         className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />

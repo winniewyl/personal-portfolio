@@ -24,8 +24,8 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 });
 
 // Dynamically import Leaflet CSS and L
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let L: any = null;
+let leafletCSSLoaded = false;
 
 interface TravelLocation {
   id: string;
@@ -154,6 +154,8 @@ const travelLocations: TravelLocation[] = [
 ];
 
 const About: React.FC = () => {
+  const [selectedLocation, setSelectedLocation] =
+    useState<TravelLocation | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -163,7 +165,6 @@ const About: React.FC = () => {
         L = leaflet.default;
 
         // Fix for default markers in react-leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
           iconRetinaUrl:
@@ -181,7 +182,9 @@ const About: React.FC = () => {
     }
   }, []);
 
-
+  const handleLocationClick = (location: TravelLocation) => {
+    setSelectedLocation(location);
+  };
 
   const getMarkerColor = (type: string) => {
     switch (type) {
@@ -264,7 +267,7 @@ const About: React.FC = () => {
         About Me
       </h2>
       <p className="text-base sm:text-lg text-center text-gray-700 dark:text-gray-300 mb-6 sm:mb-8">
-        My journey around the world - places I&apos;ve lived, studied, and visited.
+        My journey around the world - places I've lived, studied, and visited.
       </p>
 
       {/* Interactive World Map */}
@@ -314,6 +317,9 @@ const About: React.FC = () => {
                   key={location.id}
                   position={location.coordinates}
                   icon={createCustomIcon(location.type)}
+                  eventHandlers={{
+                    click: () => handleLocationClick(location),
+                  }}
                 >
                   <Popup>
                     <div className="text-center">

@@ -24,7 +24,6 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 });
 
 // Dynamically import Leaflet CSS and L
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let L: any = null;
 
 interface TravelLocation {
@@ -163,7 +162,6 @@ const About: React.FC = () => {
         L = leaflet.default;
 
         // Fix for default markers in react-leaflet
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
           iconRetinaUrl:
@@ -181,7 +179,9 @@ const About: React.FC = () => {
     }
   }, []);
 
-
+  const handleLocationClick = (location: TravelLocation) => {
+    setSelectedLocation(location);
+  };
 
   const getMarkerColor = (type: string) => {
     switch (type) {
@@ -314,6 +314,9 @@ const About: React.FC = () => {
                   key={location.id}
                   position={location.coordinates}
                   icon={createCustomIcon(location.type)}
+                  eventHandlers={{
+                    click: () => handleLocationClick(location),
+                  }}
                 >
                   <Popup>
                     <div className="text-center">

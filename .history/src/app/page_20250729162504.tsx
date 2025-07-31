@@ -1,12 +1,13 @@
 'use client';
 
+import Hero from '../components/Hero';
 import About from '../components/About';
+import Projects from '../components/Projects';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 const experienceData = [
   {
-    org: 'Data Intensive Studies Center',
+    org: 'Data Intensive Studies Center, Tufts University',
     title: 'Data Analyst Intern & Co-Author',
     date: 'Jun 2023 – Dec 2023',
     highlights: [
@@ -37,7 +38,8 @@ const projectData = [
     ],
   },
   {
-    title: 'Digital Transformation of Johnson & Johnson',
+    title:
+      'Digital Transformation of Johnson & Johnson, Technology-Driven Business Course',
     role: 'Analyst',
     date: 'Fall 2024',
     highlights: [
@@ -47,7 +49,7 @@ const projectData = [
     ],
   },
   {
-    title: 'Data Intensive Studies Center',
+    title: 'Data Intensive Studies Center, Tufts University',
     role: 'Researcher',
     date: 'Jun 2023 – Dec 2023',
     highlights: [
@@ -64,6 +66,13 @@ export default function Home() {
 
   useEffect(() => {
     const sections = ['hero', 'about', 'experience', 'projects', 'education'];
+    const sectionColors = {
+      hero: 'text-violet-600',
+      about: 'text-blue-600',
+      experience: 'text-green-600',
+      projects: 'text-yellow-600',
+      education: 'text-pink-600',
+    };
 
     const observers = sections.map((sectionId) => {
       const element =
@@ -116,32 +125,6 @@ export default function Home() {
     return colors[currentSection as keyof typeof colors] || 'text-violet-600';
   };
 
-  const getNavLinkColor = (section: string) => {
-    const colors = {
-      about: 'text-blue-600',
-      experience: 'text-green-600',
-      projects: 'text-yellow-600',
-      education: 'text-pink-600',
-    };
-    return currentSection === section
-      ? colors[section as keyof typeof colors]
-      : 'text-gray-900 dark:text-white';
-  };
-
-  const getNavHoverColor = () => {
-    const colors = {
-      hero: 'hover:bg-violet-100 dark:hover:bg-violet-900/30',
-      about: 'hover:bg-blue-100 dark:hover:bg-blue-900/30',
-      experience: 'hover:bg-green-100 dark:hover:bg-green-900/30',
-      projects: 'hover:bg-yellow-100 dark:hover:bg-yellow-900/30',
-      education: 'hover:bg-pink-100 dark:hover:bg-pink-900/30',
-    };
-    return (
-      colors[currentSection as keyof typeof colors] ||
-      'hover:bg-violet-100 dark:hover:bg-violet-900/30'
-    );
-  };
-
   const nextProject = () => {
     setCurrentProject((prev) => (prev + 1) % projectData.length);
   };
@@ -159,160 +142,147 @@ export default function Home() {
   return (
     <div className="font-sans min-h-screen flex flex-col">
       {/* Navbar */}
-      <nav className="w-full sticky top-0 z-10 bg-white/80 dark:bg-[#101010]/80 backdrop-blur border-b border-gray-100 dark:border-gray-800">
-        <div className="w-full flex items-center justify-between py-4 sm:py-6 px-4 sm:px-8">
-          <div
-            className={`text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight transition-colors duration-300 ${getNavbarColor()} cursor-pointer hover:opacity-80`}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            Winnie Wang
-          </div>
-          <ul className="flex gap-2 sm:gap-4 md:gap-8 text-sm sm:text-base font-medium">
-            <li>
-              <a
-                href="#about"
-                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg ${getNavHoverColor()} transition-all duration-300 ${getNavLinkColor(
-                  'about'
-                )}`}
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#experience"
-                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg ${getNavHoverColor()} transition-all duration-300 ${getNavLinkColor(
-                  'experience'
-                )}`}
-              >
-                Experience
-              </a>
-            </li>
-            <li>
-              <a
-                href="#projects"
-                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg ${getNavHoverColor()} transition-all duration-300 ${getNavLinkColor(
-                  'projects'
-                )}`}
-              >
-                Projects
-              </a>
-            </li>
-            <li>
-              <a
-                href="#education"
-                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg ${getNavHoverColor()} transition-all duration-300 ${getNavLinkColor(
-                  'education'
-                )}`}
-              >
-                Education
-              </a>
-            </li>
-          </ul>
+      <nav className="w-full flex items-center justify-between py-6 px-8 border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-[#101010]/80 backdrop-blur z-10 sticky top-0">
+        <div
+          className={`text-2xl font-extrabold tracking-tight transition-colors duration-300 ${getNavbarColor()}`}
+        >
+          Winnie Wang
         </div>
+        <ul className="flex gap-8 text-base font-medium text-gray-900 dark:text-white">
+          <li>
+            <a
+              href="#about"
+              className="hover:text-violet-600 transition-colors"
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a
+              href="#experience"
+              className="hover:text-violet-600 transition-colors"
+            >
+              Experience
+            </a>
+          </li>
+          <li>
+            <a
+              href="#projects"
+              className="hover:text-violet-600 transition-colors"
+            >
+              Projects
+            </a>
+          </li>
+          <li>
+            <a
+              href="#education"
+              className="hover:text-violet-600 transition-colors"
+            >
+              Education
+            </a>
+          </li>
+        </ul>
       </nav>
       {/* Main Content */}
-      <main className="flex-1 w-full flex flex-col items-center">
-        <section className="w-full flex flex-col items-center justify-center py-8 sm:py-12 md:py-16 lg:py-20 bg-violet-50 dark:bg-violet-900/20 relative min-h-screen">
+      <main className="flex-1 w-full flex flex-col items-center px-4 sm:px-0">
+        <section className="w-full flex flex-col items-center justify-center py-20 sm:py-28 bg-violet-50 dark:bg-violet-900/20 relative min-h-screen">
           {/* Headshot */}
-          <Image
+          <img
             src="/my-headshot.png"
             alt="Winnie Wang"
-            width={320}
-            height={320}
-            className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 object-contain"
+            className="w-80 h-80 object-contain"
           />
         </section>
         <section
           id="about"
-          className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-blue-50 dark:bg-blue-900/20"
+          className="w-full flex flex-col items-center py-20 sm:py-28 bg-blue-50 dark:bg-blue-900/20 min-h-screen"
         >
-          <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-0">
             <About />
           </div>
         </section>
         {/* Experience Section */}
         <section
           id="experience"
-          className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-green-50 dark:bg-green-900/20 min-h-screen"
+          className="w-full flex flex-col items-center py-20 sm:py-28 bg-green-50 dark:bg-green-900/20 min-h-screen"
         >
-          <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-green-600 dark:text-green-400 text-center">
-              Professional Experience
+          <div className="max-w-5xl mx-auto px-4 sm:px-0">
+            <h2 className="text-3xl font-bold mb-10 text-green-600 dark:text-green-400">
+              Internship & Professional Experience
             </h2>
-            <div className="space-y-8">
+            <ol className="relative border-l-2 border-green-200 dark:border-green-700">
               {experienceData.map((exp, idx) => (
-                <div
-                  key={exp.title}
-                  className="bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 transform translate-y-8 opacity-0 animate-fade-in-up"
-                  style={{
-                    animationDelay: `${idx * 200}ms`,
-                    animationFillMode: 'forwards',
-                  }}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4">
-                    <div>
-                      <h3 className="font-semibold text-lg sm:text-xl text-gray-900 dark:text-white mb-1">
+                <li key={exp.title} className="mb-12 ml-6">
+                  <span className="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -left-4 ring-4 ring-white dark:ring-[#18181c]">
+                    <svg
+                      className="w-5 h-5 text-green-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V7h2v2z" />
+                    </svg>
+                  </span>
+                  <div className="bg-white dark:bg-[#232336] rounded-xl shadow p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                      <span className="font-semibold text-lg text-gray-900 dark:text-white">
                         {exp.title}
-                      </h3>
-                      <div className="text-base sm:text-lg font-medium text-green-700 dark:text-green-300 mb-1">
-                        {exp.org}
-                      </div>
-                      <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      </span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
                         {exp.date}
-                      </div>
+                      </span>
                     </div>
+                    <div className="text-md font-medium text-green-700 dark:text-green-300 mb-1">
+                      {exp.org}
+                    </div>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700 dark:text-gray-300">
+                      {exp.highlights.map((h, i) => (
+                        <li key={i}>{h}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="list-disc pl-4 sm:pl-5 space-y-1 sm:space-y-2 text-sm sm:text-base text-gray-700 dark:text-gray-300">
-                    {exp.highlights.map((h, i) => (
-                      <li key={i} className="leading-relaxed">
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
         {/* Projects Section */}
         <section
           id="projects"
-          className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-yellow-50 dark:bg-yellow-900/20 min-h-screen"
+          className="w-full flex flex-col items-center py-20 sm:py-28 bg-yellow-50 dark:bg-yellow-900/20 min-h-screen"
         >
-          <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-yellow-600 dark:text-yellow-400 text-center">
-              Research Projects
+          <div className="max-w-5xl mx-auto px-4 sm:px-0">
+            <h2 className="text-3xl font-bold mb-10 text-yellow-600 dark:text-yellow-400">
+              Academic & Research Projects
             </h2>
-            <div className="relative w-full max-w-6xl mx-auto">
+            <div className="relative w-full max-w-3xl mx-auto">
               {/* Carousel Container */}
               <div className="relative overflow-hidden rounded-xl">
                 <div className="flex transition-transform duration-500 ease-in-out">
-                  {projectData.map((proj) => (
+                  {projectData.map((proj, idx) => (
                     <div
                       key={proj.title}
-                      className="w-full flex-shrink-0 bg-white dark:bg-[#232336] rounded-xl shadow-lg p-4 sm:p-6 px-6 sm:px-12"
+                      className="w-full flex-shrink-0 bg-white dark:bg-[#232336] rounded-xl shadow-lg p-8"
                       style={{
                         transform: `translateX(-${currentProject * 100}%)`,
                       }}
                     >
-                      <div className="text-center mx-4 sm:mx-8">
+                      <div className="text-center">
                         {/* Project Header */}
-                        <div className="mb-3 sm:mb-4">
-                          <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        <div className="mb-6">
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                             {proj.title}
                           </h3>
-                          <div className="text-sm sm:text-base font-medium text-yellow-700 dark:text-yellow-300 mb-1">
+                          <div className="text-lg font-medium text-yellow-700 dark:text-yellow-300 mb-1">
                             {proj.role}
                           </div>
-                          <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
                             {proj.date}
                           </div>
                         </div>
 
                         {/* Project Details */}
                         <div className="text-left">
-                          <ul className="list-disc pl-4 sm:pl-5 space-y-1 sm:space-y-2 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                          <ul className="list-disc pl-6 space-y-3 text-gray-700 dark:text-gray-300 text-lg">
                             {proj.highlights.map((h, i) => (
                               <li key={i} className="leading-relaxed">
                                 {h}
@@ -329,11 +299,11 @@ export default function Home() {
               {/* Navigation Arrows */}
               <button
                 onClick={prevProject}
-                className="absolute left-1 top-1/2 -translate-y-1/2 bg-white dark:bg-[#232336] rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white dark:bg-[#232336] rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
                 aria-label="Previous project"
               >
                 <svg
-                  className="w-5 h-5 text-yellow-600"
+                  className="w-6 h-6 text-yellow-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -349,11 +319,11 @@ export default function Home() {
 
               <button
                 onClick={nextProject}
-                className="absolute right-1 top-1/2 -translate-y-1/2 bg-white dark:bg-[#232336] rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-[#232336] rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
                 aria-label="Next project"
               >
                 <svg
-                  className="w-5 h-5 text-yellow-600"
+                  className="w-6 h-6 text-yellow-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -387,40 +357,38 @@ export default function Home() {
         </section>
         <section
           id="education"
-          className="w-full flex flex-col items-center py-12 sm:py-12 md:py-16 lg:py-20 bg-pink-50 dark:bg-pink-900/20 min-h-screen"
+          className="w-full flex flex-col items-center py-20 sm:py-28 bg-pink-50 dark:bg-pink-900/20 min-h-screen"
         >
-          <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 lg:mb-10 text-pink-600 dark:text-pink-400 text-center">
+          <div className="max-w-5xl mx-auto px-4 sm:px-0">
+            <h2 className="text-3xl font-bold mb-10 text-pink-600 dark:text-pink-400">
               Education
             </h2>
-            <div className="relative w-full flex flex-col lg:flex-row items-center justify-center">
+            <div className="relative w-full flex flex-col md:flex-row items-center justify-center">
               {/* Education Cards */}
-              <div className="flex flex-col lg:flex-row items-center justify-center w-full gap-6 sm:gap-8 lg:gap-0">
+              <div className="flex flex-col md:flex-row items-center justify-center w-full gap-0">
                 {/* Middle School */}
                 <div
-                  className="group w-64 h-64 sm:w-72 sm:h-72 lg:flex-1 relative lg:-mr-12 transform rotate-3 hover:rotate-0 transition-all duration-300 perspective-1000"
+                  className="group flex-1 w-72 h-72 relative -mr-12 transform rotate-3 hover:rotate-0 transition-all duration-300 perspective-1000"
                   data-flipped="false"
                 >
                   {/* Front Side - Logo */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 group-data-[flipped=true]:rotate-y-180 transition-transform duration-1000">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 group-data-[flipped=true]:rotate-y-180 transition-transform duration-1000">
+                    <div className="w-24 h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
+                      <img
                         src="/yu-hua-logo.png"
                         alt="江西育华学校 logo"
-                        width={80}
-                        height={80}
-                        className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
+                        className="w-20 h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
                     </div>
                   </div>
                   {/* Back Side - Description */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 group-data-[flipped=true]:rotate-y-0 transition-transform duration-1000">
-                    <div className="flex flex-col items-center space-y-1 sm:space-y-2">
-                      <span className="font-bold text-sm sm:text-base lg:text-lg text-pink-700">
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 group-data-[flipped=true]:rotate-y-0 transition-transform duration-1000">
+                    <div className="flex flex-col items-center space-y-2">
+                      <span className="font-bold text-lg text-pink-700">
                         江西育华学校
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
                         2014–2017
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -430,99 +398,93 @@ export default function Home() {
                   </div>
                 </div>
                 {/* High School */}
-                <div className="group w-64 h-64 sm:w-72 sm:h-72 lg:flex-1 relative lg:-mr-12 transform -rotate-3 hover:rotate-0 transition-all duration-300 perspective-1000">
+                <div className="group flex-1 w-72 h-72 relative -mr-12 transform -rotate-3 hover:rotate-0 transition-all duration-300 perspective-1000">
                   {/* Front Side - Logo */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
+                    <div className="w-24 h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
+                      <img
                         src="/JXSDFZ-logo.png"
                         alt="江西师大附中国际部 logo"
-                        width={80}
-                        height={80}
-                        className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
+                        className="w-20 h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
                     </div>
                   </div>
                   {/* Back Side - Description */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
-                    <div className="flex flex-col items-center space-y-1 sm:space-y-2">
-                      <span className="font-bold text-sm sm:text-base lg:text-lg text-pink-700">
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
+                    <div className="flex flex-col items-center space-y-2">
+                      <span className="font-bold text-lg text-pink-700">
                         江西师大附中国际部
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
                         High School Diploma
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
                         2017–2020
                       </span>
                     </div>
                   </div>
                 </div>
                 {/* Tufts University */}
-                <div className="group w-64 h-64 sm:w-72 sm:h-72 lg:flex-1 relative lg:-mr-12 transform rotate-5 hover:rotate-0 transition-all duration-300 perspective-1000">
+                <div className="group flex-1 w-72 h-72 relative -mr-12 transform rotate-5 hover:rotate-0 transition-all duration-300 perspective-1000">
                   {/* Front Side - Logo */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
+                    <div className="w-24 h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
+                      <img
                         src="/tufts-logo.png"
                         alt="Tufts University logo"
-                        width={80}
-                        height={80}
-                        className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
+                        className="w-20 h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
                     </div>
                   </div>
                   {/* Back Side - Description */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
-                    <div className="flex flex-col items-center space-y-1 sm:space-y-2">
-                      <span className="font-bold text-sm sm:text-base lg:text-lg text-pink-700">
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
+                    <div className="flex flex-col items-center space-y-2">
+                      <span className="font-bold text-lg text-pink-700">
                         Tufts University
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
                         May 2024
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-900 dark:text-white text-center">
+                      <span className="text-gray-900 dark:text-white">
                         B.S. in Applied Mathematics & Computer Science
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
                         GPA: 3.83 / 4.00
                       </span>
                       <span className="text-xs text-emerald-600">
-                        Summa Cum Laude, Dean&apos;s List
+                        Summa Cum Laude, Dean's List
                       </span>
                     </div>
                   </div>
                 </div>
                 {/* Purdue University */}
-                <div className="group w-64 h-64 sm:w-72 sm:h-72 lg:flex-1 relative transform -rotate-5 hover:rotate-0 transition-all duration-300 perspective-1000">
+                <div className="group flex-1 w-72 h-72 relative transform -rotate-5 hover:rotate-0 transition-all duration-300 perspective-1000">
                   {/* Front Side - Logo */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
-                      <Image
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden group-hover:rotate-y-180 transition-transform duration-1000">
+                    <div className="w-24 h-24 flex items-center justify-center rounded-full bg-white/30 backdrop-blur-md shadow-inner">
+                      <img
                         src="/purdue-logo.png"
                         alt="Purdue University logo"
-                        width={80}
-                        height={80}
-                        className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain filter grayscale"
+                        className="w-20 h-20 object-contain filter grayscale"
                         style={{ mixBlendMode: 'multiply' }}
                       />
                     </div>
                   </div>
                   {/* Back Side - Description */}
-                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-4 sm:p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
-                    <div className="flex flex-col items-center space-y-1 sm:space-y-2">
-                      <span className="font-bold text-sm sm:text-base lg:text-lg text-pink-700">
+                  <div className="absolute inset-0 bg-white dark:bg-[#232336] rounded-xl shadow-xl p-6 border border-pink-100 dark:border-pink-700 text-center flex flex-col items-center justify-center backface-hidden rotate-y-180 group-hover:rotate-y-0 transition-transform duration-1000">
+                    <div className="flex flex-col items-center space-y-2">
+                      <span className="font-bold text-lg text-pink-700">
                         Purdue University
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
                         Expected Jun 2026
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-900 dark:text-white text-center">
+                      <span className="text-gray-900 dark:text-white">
                         Master of Business and Technology
                       </span>
-                      <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
                         GPA: 3.75 / 4.00
                       </span>
                     </div>
@@ -534,8 +496,8 @@ export default function Home() {
         </section>
       </main>
       {/* Footer */}
-      <footer className="w-full py-8 sm:py-12 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8">
+      <footer className="w-full py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto px-8 flex flex-col items-center space-y-8">
           {/* Social Media Icons */}
           <div className="flex space-x-8">
             <a
