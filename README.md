@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Portfolio - Winnie Wang
 
-## Getting Started
+A modern, responsive personal portfolio website built with Next.js, React, and TypeScript. Features an interactive world map showing travel locations and a beautiful, animated design.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Responsive Design**: Optimized for all devices and screen sizes
+- **Interactive World Map**: Built with Leaflet.js showing travel locations
+- **Smooth Animations**: CSS animations and transitions throughout
+- **Dark/Light Mode**: Automatic theme switching based on system preferences
+- **Modern UI**: Clean, professional design with Tailwind CSS
+- **Performance Optimized**: Fast loading with Next.js optimizations
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15.4.2
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Mapping**: Leaflet.js with React-Leaflet
+- **Deployment**: Ready for Vercel, Netlify, or any static hosting
+
+## 📁 Project Structure
+
+```
+personal-portfolio/
+├── src/
+│   ├── app/
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   └── components/
+│       ├── About.tsx
+│       ├── Contact.tsx
+│       ├── Footer.tsx
+│       ├── Hero.tsx
+│       └── Projects.tsx
+├── public/
+│   ├── my-headshot.png
+│   ├── tufts-logo.png
+│   ├── purdue-logo.png
+│   └── ... (other assets)
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18+ 
+- npm or yarn
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/personal-portfolio.git
+   cd personal-portfolio
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Customization
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Personal Information
+- Update personal details in `src/app/page.tsx`
+- Replace images in the `public/` directory
+- Modify travel locations in `src/components/About.tsx`
+
+### Styling
+- Colors and themes can be customized in `src/app/globals.css`
+- Component-specific styles are in each component file
+- Tailwind classes can be modified for different looks
+
+### Content
+- Update experience data in the `experienceData` array
+- Modify project information in the `projectData` array
+- Change education details in the education section
+
+## 🗺️ Interactive Map
+
+The world map shows:
+- **Green markers**: Current location
+- **Blue markers**: Places lived
+- **Yellow markers**: Places visited
+
+Click on markers to see location details and descriptions.
+
+## 🎨 Design Features
+
+- **Smooth scrolling** between sections
+- **Color-coded sections** with different themes
+- **Animated cards** with hover effects
+- **Responsive navigation** with sticky positioning
+- **Professional typography** and spacing
+
+## 📱 Responsive Design
+
+The portfolio is fully responsive and optimized for:
+- Mobile devices (320px+)
+- Tablets (768px+)
+- Desktop screens (1024px+)
+- Large displays (1440px+)
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Vercel will automatically detect Next.js and deploy
+3. Your site will be live at `https://your-project.vercel.app`
+
+### Netlify
+1. Build the project: `npm run build`
+2. Deploy the `out` directory to Netlify
+
+### Other Platforms
+The project can be deployed to any static hosting service that supports Next.js.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📞 Contact
+
+- **Name**: Winnie Wang
+- **Email**: [Your Email]
+- **LinkedIn**: [Your LinkedIn]
+- **GitHub**: [Your GitHub]
+
+---
+
+Built with ❤️ using Next.js and React
